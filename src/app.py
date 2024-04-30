@@ -1,35 +1,25 @@
 import base64
-import os
+from dataclasses import asdict
 import tempfile
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
+from html_service import HtmlService
+from invoice_service import InvoiceService
+from pdf_service import PdfService
+
+html_service = HtmlService()
+invoice_service = InvoiceService()
+pdf_service = PdfService()
+
 
 def lambda_handler(event, context):
-    print("Start")
-    # テンプレートが格納されているディレクトリを指定
-    env = Environment(loader=FileSystemLoader("./"))
-
-    # テンプレートを読み込む
-    template = env.get_template("sample.html")
-
-    # プレースホルダを置換する値を指定
-    data = {"title": "レポート"}
-
-    # テンプレートをレンダリング（プレースホルダの置換）して結果を取得
-    result = template.render(data)
-
-    print("HTML created")
-    print(result)
-
-    with tempfile.TemporaryDirectory() as tmp:
-        pdf = HTML(string=result, encoding="utf-8").write_pdf()
-        print("PDF created")
-        print(pdf)
-        if pdf:
-            v = base64.b64encode(pdf)
-            # vをbase64文字列にする
-            print(v.decode("utf-8"))
+    invoice = invoice_service.create()
+    html = html_service.render_invoice(asdict(invoice))
+    pdf = pdf_service.create_from_html(html)
+    if pdf:
+        pdf_base64 = base64.b64encode(pdf).decode("utf-8")
+        print(pdf_base64)
 
 
 lambda_handler(None, None)

@@ -5,16 +5,16 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
-      ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.<region>.amazonaws.com/<repository-name>:latest"
+      ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/html-to-pdf-lambda:latest"
       MemorySize: 512
-      Timeout: 10
-      Environment:
-        Variables:
-          VARIABLE_NAME: "Value"
+      Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerTag: html-to-pdf-lambda
+      DockerContext: ./
   FunctionLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: /aws/lambda/Function
-      RetentionInDays:

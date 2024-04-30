@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <style>
+      body {
+        font-family: "Noto Sans JP";
+      }
+      .invoice-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .issue-date {
+        text-align: right;
+      }
+      .invoice-details,
+      .company-details {
+        margin-bottom: 20px;
+      }
+      .invoice-details table,
+      .invoice-details th,
+      .invoice-details td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+      }
+      .total {
+        text-align: right;
+        font-weight: bold;
+      }
+      .bank-account,
+      .company-details {
+        font-size: 0.8em;
+      }
+      .company-details {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-header">
+      <h1>{{ title }}</h1>
+      <p class="issue-date">発行日: {{ issue_date }}</p>
+      <p>請求書番号: {{ invoice_number }}</p>
+    </div>
+    <div class="invoice-details">
+      <h2>明細リスト</h2>
+      <table>
+        <tr>
+          <th>商品名</th>
+          <th>金額</th>
+        </tr>
+        {% for item in item_list %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>¥{{ item.price }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td class="total" colspan="2">合計額: ¥{{ total }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="bank-account">
+      <p>振込先:</p>
+      <p>口座名義: {{ bank_account.name }}</p>
+      <p>支店: {{ bank_account.branch }}</p>
+      <p>口座番号: {{ bank_account.number }}</p>
+    </div>
+    <div class="company-details">
+      <p>会社名: {{ company.name }}</p>
+      <p>郵便番号: {{ company.postal_code }}</p>
+      <p>住所: {{ company.address }}</p>
+      <p>法人番号: {{ company.corporate_number }}</p>
+    </div>
+  </body>
+</html>
