@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.<region>.amazonaws.com/<repository-name>:latest"
+      MemorySize: 512
+      Timeout: 10
+      Environment:
+        Variables:
+          VARIABLE_NAME: "Value"
+      Policies:
+        - AWSLambdaBasicExecutionRole
+  FunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/Function
+      RetentionInDays:
