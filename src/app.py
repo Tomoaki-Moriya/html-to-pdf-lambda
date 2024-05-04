@@ -15,11 +15,11 @@ def lambda_handler(event, context):
     pdf = pdf_service.create_from_html(html)
     pdf_base64 = base64.b64encode(pdf).decode("utf-8")
     return {
-        'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': 'attachment; filename=invoice.pdf'
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": "attachment; filename=invoice.pdf"
         },
-        'body': pdf_base64,
-        'isBase64Encoded': True
+        "body": pdf_base64,
+        "isBase64Encoded": True
     }
