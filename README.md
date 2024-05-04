@@ -22,7 +22,9 @@ sam build
 aws s3api create-bucket --bucket <bucket_name> --region <region> --create-bucket-configuration LocationConstraint=<region> --profile <your_profile_name>
 ```
 
+```
 aws ecr create-repository --repository-name html-to-pdf-lambda --region <your_region> --profile <your_profile_name>
+```
 
 ```
 
