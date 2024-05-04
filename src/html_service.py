@@ -1,38 +1,21 @@
-from dataclasses import asdict, dataclass
-from typing import Any, Final, List
+from dataclasses import asdict
+from typing import Final
 from jinja2 import Environment, FileSystemLoader
 
-
-@dataclass(frozen=True)
-class Item:
-    name: str
-    price: int
+from invoice_service import Invoice
 
 
-@dataclass(frozen=True)
-class Company:
-    name: str
-    postal_code: str
-    address: str
-    corporate_number: str
-
-
-@dataclass(frozen=True)
-class InvoiceParams:
-    title: str
-    issue_date: str
-    invoice_number: str
-    item_list: List[Item]
-    total: int
-    bank_account: str
-    company: Company
+def number_format(price: int) -> str:
+    return "{:,}".format(price)
 
 
 class HtmlService:
     def __init__(self):
         self._env: Final = Environment(loader=FileSystemLoader("./templates"))
+        self._env.filters["number_format"] = number_format
 
-    def render_invoice(self, params: dict[str, Any]) -> str:
+    def render_invoice(self, invoice: Invoice) -> str:
         template = self._env.get_template("invoice.html")
+        params = asdict(invoice)
         html = template.render(params)
         return html

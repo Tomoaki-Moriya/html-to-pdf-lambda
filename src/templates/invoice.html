@@ -1,77 +1,119 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{ title }}</title>
     <style>
       body {
-        font-family: "Noto Sans JP";
+        font-family: "BIZ UDPGothic";
       }
-      .invoice-header {
-        text-align: center;
-        margin-bottom: 30px;
+      .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        font-size: 16px;
+        line-height: 24px;
+        color: #555;
       }
-      .issue-date {
-        text-align: right;
+      .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
       }
-      .invoice-details,
-      .company-details {
-        margin-bottom: 20px;
-      }
-      .invoice-details table,
-      .invoice-details th,
-      .invoice-details td {
-        border: 1px solid black;
-        border-collapse: collapse;
+      .invoice-box table td {
         padding: 5px;
+        vertical-align: top;
       }
-      .total {
+      .invoice-box table tr td:nth-child(2) {
         text-align: right;
+      }
+      .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+      }
+      .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+      }
+      .invoice-box table tr.information table td {
+        padding-bottom: 40px;
+      }
+      .invoice-box table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
         font-weight: bold;
       }
-      .bank-account,
-      .company-details {
-        font-size: 0.8em;
+      .invoice-box table tr.details td {
+        padding-bottom: 20px;
       }
-      .company-details {
-        text-align: right;
+      .invoice-box table tr.item td {
+        border-bottom: 1px solid #eee;
+      }
+      .invoice-box table tr.item.last td {
+        border-bottom: none;
+      }
+      .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <div class="invoice-header">
-      <h1>{{ title }}</h1>
-      <p class="issue-date">発行日: {{ issue_date }}</p>
-      <p>請求書番号: {{ invoice_number }}</p>
-    </div>
-    <div class="invoice-details">
-      <h2>明細リスト</h2>
-      <table>
-        <tr>
-          <th>商品名</th>
-          <th>金額</th>
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">請求書</td>
+                <td>発行日: {{issued_date}}<br /></td>
+              </tr>
+            </table>
+          </td>
         </tr>
-        {% for item in item_list %}
-        <tr>
+
+        <tr class="information">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  〒{{customer.postal_code}}<br />
+                  {{customer.address}}<br />
+                  {{customer.name}}
+                </td>
+                <td>
+                  〒{{company.postal_code}}<br />
+                  {{company.address}}<br />
+                  {{company.name}}<br />
+                  請求書番号: {{company.invoice_number}}<br />
+                  登録番号: {{company.registration_number}}<br />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class="heading">
+          <td>品名</td>
+          <td>数量</td>
+          <td>金額</td>
+        </tr>
+        {% for item in items %}
+        <tr class="item">
           <td>{{ item.name }}</td>
-          <td>¥{{ item.price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>¥{{ item.price | number_format }}</td>
         </tr>
         {% endfor %}
-        <tr>
-          <td class="total" colspan="2">合計額: ¥{{ total }}</td>
+        <tr class="total">
+          <td></td>
+          <td colspan="2">小計: ¥{{ total | number_format }}</td>
+        </tr>
+        <tr class="information">
+          <td>
+            振込先<br />
+            {{company.bank_name}} {{company.bank_branch_name}}<br />
+            口座種別: 普通<br />
+            口座番号: {{company.bank_no}}<br />
+          </td>
         </tr>
       </table>
-    </div>
-    <div class="bank-account">
-      <p>振込先:</p>
-      <p>口座名義: {{ bank_account.name }}</p>
-      <p>支店: {{ bank_account.branch }}</p>
-      <p>口座番号: {{ bank_account.number }}</p>
-    </div>
-    <div class="company-details">
-      <p>会社名: {{ company.name }}</p>
-      <p>郵便番号: {{ company.postal_code }}</p>
-      <p>住所: {{ company.address }}</p>
-      <p>法人番号: {{ company.corporate_number }}</p>
     </div>
   </body>
 </html>
