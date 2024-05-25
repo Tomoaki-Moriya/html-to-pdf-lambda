@@ -22,7 +22,7 @@ phases:
   build:
     on-failure: ABORT
     commands:
-      - pytest
+      - PYTHONPATH=src pytest
       - docker build -t ${IMAGE_REPOSITORY_NAME} .
       # 7 characters of the commit hash
       - IMAGE_TAG=$(echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" | head -c 7)
@@ -34,7 +34,7 @@ phases:
         - --template-file template.yml
         - --output-template-file build.yml
         - --s3-bucket "${ARTIFACT_S3_BUCKET_NAME}"
-      # - echo "{\"IMAGE_URI\": \"${IMAGE_URI}\"}" > param.json
+      - echo '"{\"IMAGE_URI\": \"${IMAGE_URI}\"}" > param.json'
 artifacts:
   files:
     - "build.yml"
