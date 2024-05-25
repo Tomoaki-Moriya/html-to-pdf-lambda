@@ -34,7 +34,7 @@ phases:
         sam package \
           --template-file template.yml \
           --output-template-file build.yml \
-          --s3-bucket ${ARTIFACT_S3_BUCKET_NAME}
+          --s3-bucket "${ARTIFACT_S3_BUCKET_NAME}"
       - echo "{\"IMAGE_TAG\": "\"${IMAGE_URI}\"}"" > param.json
 artifacts:
   files:
