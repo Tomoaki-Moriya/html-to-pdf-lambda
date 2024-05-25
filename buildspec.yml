@@ -5,8 +5,8 @@ env:
     IMAGE_REPOSITORY_NAME: "html-to-pdf-lambda"
 
 phases:
-  on-failure: ABORT
   install:
+    on-failure: ABORT
     runtime-versions:
       python: 3.11
     commands:
