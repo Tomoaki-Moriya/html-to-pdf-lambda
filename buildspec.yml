@@ -26,9 +26,9 @@ phases:
       - docker build -t ${IMAGE_REPOSITORY_NAME} .
       # 7 characters of the commit hash
       - IMAGE_TAG=$(echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" | head -c 7)
-      - IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAUT_REGION}.amazonaws.com/${IMAGE_REPOSITORY_NAME}:${IMAGE_TAG}"
+      - IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPOSITORY_NAME}:${IMAGE_TAG}"
       - docker tag ${IMAGE_REPOSITORY_NAME} ${IMAGE_URI}
-      - aws ecr get-login-password --region ${AWS_DEFAUT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAUT_REGION}.amazonaws.com
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
       - docker push ${IMAGE_URI}
       - sam package
         - --template-file template.yml
