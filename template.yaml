@@ -1,11 +1,17 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  IMAGE_TAG:
+    Type: String
+    Default: "latest"
+
 Resources:
   Function:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
-      ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/html-to-pdf-lambda:latest"
+      ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/html-to-pdf-lambda:{IMAGE_TAG}"
       MemorySize: 512
       Timeout: 30
       Policies:
