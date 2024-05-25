@@ -34,6 +34,7 @@ phases:
         - --template-file template.yaml
         - --output-template-file build.yml
         - --s3-bucket "${ARTIFACT_S3_BUCKET_NAME}"
+        - --image-repository "${IMAGE_URI}"
       - echo '{"Parameters":{"IMAGE_URI":"'"${IMAGE_URI}"'"}}' > param.json
 artifacts:
   files:
