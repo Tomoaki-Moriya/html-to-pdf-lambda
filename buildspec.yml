@@ -31,12 +31,12 @@ phases:
       - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
       - docker push ${IMAGE_URI}
       - sam package
-        - --template-file template.yaml
-        - --output-template-file build.yaml
+        - --template-file template.yml
+        - --output-template-file build.yml
         - --s3-bucket "${ARTIFACT_S3_BUCKET_NAME}"
         - --image-repository "${IMAGE_URI}"
       - echo '{"Parameters":{"ImageTag":"'"${IMAGE_TAG}"'"}}' > param.json
 artifacts:
   files:
-    - "build.yaml"
+    - "build.yml"
     - "param.json"
